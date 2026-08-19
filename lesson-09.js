@@ -10,6 +10,8 @@
 // Log one sentence to the console, then log `document.title`, and confirm that both appear in
 // the DevTools Console rather than in a terminal. In a comment, state what the `defer`
 // attribute prevented.
+console.log("DOM and forms.");
+console.log(document.title);
 
 // Defer makes sure that the Javascript file is loaded last and makes sure all the elements are loaded before running.
 
@@ -17,9 +19,12 @@
 // Select the page's `h1` with `querySelector` and replace its `textContent` with a label name
 // of your choosing. Select the tagline by its class and change its text, then add the provided
 // highlight class to it through `classList`.
+
+const heading = document.querySelector("h1");
 console.log(heading.textContent);
 heading.textContent = "Kekubezos Reels";
 
+const tagline = document.querySelector(".tagline");
 tagline.classList.add("highlight");
 
 // TODO: Part three.
@@ -29,16 +34,6 @@ tagline.classList.add("highlight");
 // carries the cards class. Reload the page and confirm that five cards stand on it.
 
 // * The artists, provided:
-const artists = [
-  { name: "Pinkfong", genre: "Children's music", total: "11:31" },
-  { name: "Adriano Celentano", genre: "Italian pop", total: "20:52" },
-  { name: "Asake", genre: "Afrobeats", total: "14:08" },
-  { name: "Miyagi and Andy Panda", genre: "Hip-hop", total: "16:21" },
-  { name: "Johnny Cash", genre: "Country", total: "15:40" },
-];
-
-("use strict");
-
 const artists = [
   { name: "Pinkfong", genre: "Children's music", total: "11:31" },
   { name: "Adriano Celentano", genre: "Italian pop", total: "20:52" },
@@ -59,18 +54,24 @@ for (const artist of artists) {
   cardArea.append(card);
 }
 
+function renderArtistCard(artist) {
+  const card = document.createElement("article");
+  const title = document.createElement("h3");
+  title.textContent = artist.name;
+
+  const line = document.createElement("p");
+  line.textContent = `${artist.genre}, ${artist.total} of music`;
+
+  card.append(title, line);
+  cardArea.append(card);
+}
+
 // TODO: Part four.
 // Add a sixth artist object of your own invention to the array and reload. Confirm that the
 // sixth card exists, and state in a comment what you did not have to change, compared with the
 // five hand-copied cards this course opened on.
-const artists = [
-  { name: "Pinkfong", genre: "Children's music", total: "11:31" },
-  { name: "Adriano Celentano", genre: "Italian pop", total: "20:52" },
-  { name: "Asake", genre: "Afrobeats", total: "14:08" },
-  { name: "Miyagi and Andy Panda", genre: "Hip-hop", total: "16:21" },
-  { name: "Johnny Cash", genre: "Country", total: "15:40" },
-  { name: "Kekeli Norgbey", genre: "Rap", total: "1:40" },
-];
+artists.push({ name: "Kekeli Norgbey", genre: "Rap", total: "1:40" });
+renderArtistCard(artists[artists.length - 1]);
 
 // TODO: Part five.
 // The page provides a button with the shuffle class and an element with the featured class. On
@@ -97,11 +98,13 @@ const nameInput = document.querySelector("#artist-name");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  const name = nameInput.value;
+  const name = nameInput.value.trim();
   if (name) {
     console.log(`New artist submitted: ${name}`);
   }
 });
+
+nameInput.value = "";
 
 // TODO: Save deliberately, commit with a clear message, push the branch, and open a pull request
 // into main. This is the final exercise of the course, and the reviewed merge closes it.
